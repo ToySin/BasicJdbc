@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 @Slf4j
 class MemberRepositoryV0Test {
@@ -26,10 +27,20 @@ class MemberRepositoryV0Test {
         log.info("member save={}", member);
 
         //find
-        Member findMember = memberRepositoryV0.findById("memberA");
+        Member findMember = memberRepositoryV0.findById(member.getMemberId());
         log.info("member find={}", findMember);
         Assertions.assertThat(findMember.getMemberId()).isEqualTo(member.getMemberId());
         Assertions.assertThat(findMember.getMoney()).isEqualTo(member.getMoney());
+
+        //update
+        memberRepositoryV0.update(member.getMemberId(), 20000);
+        Member updateMember = memberRepositoryV0.findById(member.getMemberId());
+        Assertions.assertThat(updateMember.getMoney()).isEqualTo(20000);
+
+        //delete
+        memberRepositoryV0.delete(member.getMemberId());
+        Assertions.assertThatThrownBy(() -> memberRepositoryV0.findById(member.getMemberId()))
+                .isInstanceOf(NoSuchElementException.class);
     }
 
 }
