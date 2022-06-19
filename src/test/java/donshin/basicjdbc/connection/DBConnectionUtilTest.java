@@ -18,12 +18,4 @@ class DBConnectionUtilTest {
         Connection con = DBConnectionUtil.getConnection();
         assertThat(con).isNotNull();
     }
-
-    @Test
-    void driverManager() throws SQLException {
-        Connection con1 = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        Connection con2 = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        log.info("connection={}, class={}", con1, con1.getClass());
-        log.info("connection={}, class={}", con2, con2.getClass());
-    }
 }
